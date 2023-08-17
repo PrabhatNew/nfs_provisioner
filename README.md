@@ -23,9 +23,12 @@ After customizing the deployment YAML file, you can apply it to your Kubernetes 
 
 ```bash
 kubectl apply -f class.yaml
+```
 
 ```bash
 kubectl apply -f deployment.yaml
+```
 
 ```bash
 kubectl apply -f rbac.yaml
+```
