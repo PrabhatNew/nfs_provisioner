@@ -1,64 +1,31 @@
-# NFS Client Provisioner Helm Chart
+## Installation
+1. Clone the repository to your primary master node using the following command:
+   `````sh
+   sudo git clone https://github.com/PrabhatNew/nfs_provisioner.git
+   
 
-This Helm chart deploys an NFS client provisioner to your Kubernetes cluster. The provisioner is responsible for dynamically provisioning NFS volumes for your applications.
+2. Navigate to the repository directory:
+   ````sh 
+   cd nfs_provisioner
 
-## Prerequisites
 
-Before you can run this Helm chart, you need to have the following prerequisites installed:
+## Customization
 
-- Kubernetes cluster with version 1.18 or later
-- Helm 3
+You have to customize the NFS server details, follow these steps to set your nfs server ip and nfs path:
 
-## Installing the Chart
+1. Open the deployment YAML file.
+2. Find the `NFS_SERVER` and `NFS_PATH` environment variables in the container specification section.
+3. Replace the `REPLACE_WITH_NFS_SERVER_IP` with the IP address or hostname of your NFS server.
+4. Replace the `REPLACE_WITH_NFS_PATH` with the path to your NFS shared directory.
+5. Save the changes.
 
-To install the chart, follow these steps:
-
-1. Clone this repository to your local machine:
-
-```bash
-git clone https://github.com/PrabhatNew/nfs_provisioner.git
-```
-
-2. Change into the chart's directory:
-
-```bash
-cd nfs-provisioner
-```
-
-3. Install the chart using the `helm install` command:
+After customizing the deployment YAML file, you can apply it to your Kubernetes cluster using the `kubectl apply` command:
 
 ```bash
-helm install <release-name> . --set server=<NFS Server IP>,path=<NFS PATH >
-```
-
-Replace `<release-name>` with a name for your release, `<NFS Server IP>` with the IP address of your NFS server and `path` with the path of volume mount.
-
-## Configuration
-
-The following table lists the configurable parameters of the chart and their default values:
-
-| Parameter                  | Description                                       | Default                     |
-| --------------------------| ------------------------------------------------- | ---------------------------|
-| `storageClass.name`        | Name of the storage class to create               | `managed-nfs-storage`       |
-| `storageClass.provisioner` | Name of the NFS provisioner to use                 | `gcr.io/k8s-staging-sig-storage/nfs-subdir-external-provisioner:v4.0.1`           |
-| `storageClass.archiveOnDelete` | Whether to archive on delete or not           | `false`                 |
-| `deployment.image`        | Docker image for the NFS client provisioner       | `quay.io/external_storage/nfs-client-provisioner:latest` |
-| `deployment.provisionerName` | Name of the NFS provisioner to use             | `k8s-sigs.io/nfs-subdir-external-provisioner`       |
-| `server`                   | IP address of the NFS server                      | `""`                        |
-| `path`                     | Path to the NFS share on the server                | `""`                        |
-
-You can override these values using the `--set` flag when running the `helm install` command.
-
-## Uninstalling the Chart
-
-To uninstall the chart, use the `helm uninstall` command:
+kubectl apply -f class.yaml
 
 ```bash
-helm uninstall <release-name>
-```
+kubectl apply -f deployment.yaml
 
-Replace `<release-name>` with the name of the release that you want to uninstall.
-
-## Conclusion
-
-Congratulations! You have successfully installed an NFS client provisioner to your Kubernetes cluster using Helm. You can now use the provisioner to dynamically provision NFS volumes for your applications.
+```bash
+kubectl apply -f rbac.yaml
